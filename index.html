@@ -1,875 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>A note. A few honest, good words.</title>
-<meta name="description" content="A friendly note." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-<style>
-  :root{
-    --bg:#09090b;
-    --bg-raise:#0e0e11;
-    --text:#f2f0ec;
-    --text-dim:rgba(242,240,236,0.62);
-    --text-faint:rgba(242,240,236,0.38);
-    --ghost:rgba(242,240,236,0.09);
-    --amber:#e8a668;
-    --amber-rgb:232,166,104;
-    --rose:#e78a9c;
-    --rose-rgb:231,138,156;
-    --line:rgba(242,240,236,0.1);
-    --card:rgba(242,240,236,0.035);
-    --ease-out:cubic-bezier(.16,1,.3,1);
-  }
-
-  *,*::before,*::after{ box-sizing:border-box; }
-
-  html{ background:var(--bg); }
-
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Inter Tight', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
-
-  img,svg{ display:block; max-width:100%; }
-  a{ color:inherit; }
-  ::selection{ background:rgba(var(--rose-rgb),0.32); color:var(--text); }
-
-  a:focus-visible,button:focus-visible{
-    outline:2px solid rgba(var(--amber-rgb),0.9);
-    outline-offset:4px;
-    border-radius:4px;
-  }
-
-  h1,h2,h3,p{ margin:0; text-wrap:balance; }
-
-  /* ---------- ambient background glows (fixed, cheap, non-JS) ---------- */
-  .ambient{
-    position:fixed;
-    inset:0;
-    z-index:0;
-    pointer-events:none;
-    overflow:hidden;
-  }
-  .ambient span{
-    position:absolute;
-    border-radius:50%;
-    filter:blur(120px);
-    opacity:0.16;
-  }
-  .ambient span.a1{ width:60vw; height:60vw; top:-20vw; left:-15vw; background:radial-gradient(circle, var(--rose), transparent 70%); }
-  .ambient span.a2{ width:50vw; height:50vw; bottom:-15vw; right:-10vw; background:radial-gradient(circle, var(--amber), transparent 70%); }
-  .ambient span.a3{ width:36vw; height:36vw; top:40%; left:50%; transform:translate(-50%,-50%); background:radial-gradient(circle, var(--amber), transparent 70%); opacity:0.08; }
-
-  /* ---------- progress bar ---------- */
-  .progress{
-    position:fixed;
-    top:0; left:0;
-    width:100%;
-    height:2px;
-    z-index:50;
-    background:transparent;
-    pointer-events:none;
-  }
-  .progress-fill{
-    height:100%;
-    width:100%;
-    transform:scaleX(0);
-    transform-origin:left;
-    background:linear-gradient(90deg, var(--amber), var(--rose));
-    opacity:0.7;
-  }
-
-  .mark{
-    position:fixed;
-    top:1.6rem;
-    left:1.8rem;
-    z-index:50;
-    font-size:0.78rem;
-    letter-spacing:-0.01em;
-    color:var(--text-faint);
-    pointer-events:none;
-  }
-
-  /* ---------- smooth-scroll rig ---------- */
-  #smooth-wrapper{
-    position:fixed;
-    inset:0;
-    overflow:hidden;
-  }
-  #smooth-content{
-    position:relative;
-    width:100%;
-    will-change:transform;
-  }
-  html.reduced-motion #smooth-wrapper{ position:static; overflow:visible; }
-  html.reduced-motion #smooth-content{ transform:none !important; }
-
-  section{ position:relative; z-index:1; }
-
-  .eyebrow{
-    display:inline-block;
-    font-size:0.72rem;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--text-faint);
-    font-weight:500;
-  }
-
-  /* ================= HERO ================= */
-  .hero{ position:relative; height:220vh; }
-  html.reduced-motion .hero{ height:auto; }
-
-  .hero-pin{
-    position:relative;
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    padding:0 1.5rem;
-  }
-  html.reduced-motion .hero-pin{ height:auto; padding:9rem 1.5rem 7rem; }
-
-  .ghost-headline{
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    font-size:clamp(4.2rem, 22vw, 17rem);
-    font-weight:800;
-    letter-spacing:-0.04em;
-    color:var(--ghost);
-    white-space:nowrap;
-    line-height:1;
-    pointer-events:none;
-    user-select:none;
-    z-index:0;
-  }
-  html.reduced-motion .ghost-headline{ position:relative; top:auto; left:auto; transform:none; text-align:center; font-size:clamp(3rem,14vw,8rem); margin-bottom:-2rem; }
-
-  .hero-fg{
-    position:relative;
-    z-index:2;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:1.6rem;
-    text-align:center;
-  }
-
-  .envelope{ display:flex; flex-direction:column; align-items:center; gap:1.4rem; }
-
-  .envelope-body{
-    position:relative;
-    width:clamp(270px, 34vw, 440px);
-    aspect-ratio:3/2;
-    border-radius:22px;
-    border:1px solid var(--line);
-    background:
-      linear-gradient(155deg, rgba(var(--rose-rgb),0.09), rgba(9,9,11,0) 55%),
-      linear-gradient(205deg, var(--bg-raise), #0a0a0c 70%);
-    box-shadow:0 30px 80px -30px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.02) inset;
-    overflow:hidden;
-  }
-
-  .envelope-open-layer{
-    position:absolute;
-    inset:0;
-    opacity:0;
-    background:
-      linear-gradient(155deg, rgba(var(--amber-rgb),0.16), rgba(var(--rose-rgb),0.08) 60%, transparent 85%),
-      linear-gradient(205deg, #131015, #0a0a0c 70%);
-  }
-
-  .envelope-paper{
-    position:absolute;
-    left:8%; right:8%;
-    bottom:10%;
-    height:64%;
-    border-radius:10px 10px 4px 4px;
-    background:linear-gradient(180deg, rgba(242,240,236,0.06), rgba(242,240,236,0.02));
-    border:1px solid rgba(242,240,236,0.08);
-    transform:translateY(28%);
-  }
-  .envelope-paper::before{
-    content:"";
-    position:absolute;
-    left:14%; right:14%; top:22%;
-    height:2px;
-    background:rgba(242,240,236,0.14);
-    box-shadow:
-      0 14px 0 rgba(242,240,236,0.1),
-      0 28px 0 rgba(242,240,236,0.1),
-      0 42px 0 rgba(242,240,236,0.07);
-  }
-
-  .envelope-flap{
-    position:absolute;
-    top:0; left:0; right:0;
-    height:58%;
-    clip-path:polygon(0 0, 100% 0, 50% 92%);
-    background:linear-gradient(160deg, #141317, #0b0b0d 75%);
-    border-bottom:1px solid rgba(255,255,255,0.03);
-    transform-origin:top center;
-    transform:rotateX(0deg);
-  }
-
-  .wax-seal{
-    position:absolute;
-    top:38%; left:50%;
-    transform:translate(-50%,-50%);
-    width:54px; height:54px;
-    border-radius:44% 56% 58% 42% / 46% 44% 56% 54%;
-    background:radial-gradient(circle at 32% 28%, var(--amber), var(--rose) 62%, #7a3d47 100%);
-    box-shadow:0 0 26px 4px rgba(var(--rose-rgb),0.35), inset 0 -6px 10px rgba(0,0,0,0.35);
-    animation:seal-pulse 4.2s ease-in-out infinite;
-    z-index:3;
-  }
-  @keyframes seal-pulse{
-    0%,100%{ box-shadow:0 0 22px 3px rgba(var(--rose-rgb),0.32), inset 0 -6px 10px rgba(0,0,0,0.35); }
-    50%{ box-shadow:0 0 38px 9px rgba(var(--amber-rgb),0.4), inset 0 -6px 10px rgba(0,0,0,0.35); }
-  }
-
-  .envelope-caption{
-    max-width:26ch;
-    color:var(--text-dim);
-    font-size:0.98rem;
-    letter-spacing:-0.01em;
-    line-height:1.5;
-  }
-
-  .scroll-cue{
-    position:absolute;
-    bottom:2.6rem; left:50%;
-    transform:translateX(-50%);
-    display:flex; flex-direction:column; align-items:center; gap:0.5rem;
-    color:var(--text-faint);
-    font-size:0.7rem;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    z-index:2;
-  }
-  .scroll-cue span{
-    width:1px; height:28px;
-    background:linear-gradient(180deg, var(--text-faint), transparent);
-    animation:cue-drift 1.8s ease-in-out infinite;
-  }
-  @keyframes cue-drift{ 0%,100%{ opacity:0.25; transform:scaleY(0.7); } 50%{ opacity:0.9; transform:scaleY(1); } }
-  html.reduced-motion .scroll-cue{ display:none; }
-
-  /* ================= ORB FIELD ================= */
-  .orbfield-wrap{ position:relative; height:260vh; }
-  html.reduced-motion .orbfield-wrap{ height:auto; }
-
-  .orbfield-stage{
-    position:relative;
-    height:100vh;
-    display:flex; align-items:center; justify-content:center;
-    overflow:hidden;
-  }
-  html.reduced-motion .orbfield-stage{ height:auto; padding:9rem 1.5rem; }
-
-  .orb-layer{ position:absolute; inset:0; z-index:1; }
-  .orb{
-    position:absolute;
-    border-radius:50%;
-    background:
-      radial-gradient(circle at 30% 26%, rgba(255,255,255,0.55), rgba(255,255,255,0) 32%),
-      radial-gradient(circle at 50% 55%, rgba(var(--rose-rgb),0.32), rgba(var(--amber-rgb),0.14) 55%, rgba(9,9,11,0) 78%);
-    box-shadow:inset 0 -8px 16px rgba(0,0,0,0.35), inset 0 6px 10px rgba(255,255,255,0.06);
-    will-change:transform;
-  }
-
-  .orbfield-copy{
-    position:relative;
-    z-index:2;
-    max-width:22ch;
-    text-align:center;
-    font-size:clamp(1.4rem, 3.4vw, 2.3rem);
-    line-height:1.35;
-    letter-spacing:-0.02em;
-    color:var(--text);
-    padding:0 1.5rem;
-  }
-
-  /* ================= STATEMENTS ================= */
-  .statement{
-    min-height:60vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:8vh 1.5rem;
-  }
-  .statement-inner{
-    max-width:20ch;
-    text-align:center;
-    font-size:clamp(1.9rem, 5vw, 3.4rem);
-    font-weight:600;
-    letter-spacing:-0.03em;
-    line-height:1.2;
-    filter:blur(18px);
-    opacity:0;
-  }
-  .statement-2 .statement-inner{
-    background:linear-gradient(100deg, var(--text) 40%, var(--rose));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-  }
-  html.reduced-motion .statement-inner{ filter:none; opacity:1; }
-
-  /* ================= LETTER SCENES ================= */
-  .letter-scenes{ position:relative; height:500vh; }
-  html.reduced-motion .letter-scenes{ height:auto; }
-
-  .letter-stage{
-    position:relative;
-    height:100vh;
-    display:flex; align-items:center; justify-content:center;
-    overflow:hidden;
-    padding:0 1.5rem;
-  }
-  html.reduced-motion .letter-stage{
-    height:auto; overflow:visible;
-    display:flex; flex-direction:column; align-items:center; gap:3rem;
-    padding:8rem 1.5rem;
-  }
-
-  .letter-card{
-    position:relative;
-    width:clamp(260px, 30vw, 400px);
-    padding:2.1rem 1.8rem;
-    border-radius:20px;
-    border:1px solid var(--line);
-    background:var(--card);
-    box-shadow:0 40px 90px -40px rgba(0,0,0,0.75);
-    transition:background 0.6s var(--ease-out), border-color 0.6s var(--ease-out);
-    z-index:2;
-  }
-  .letter-card[data-scene="0"]{ background:linear-gradient(160deg, rgba(var(--amber-rgb),0.05), rgba(9,9,11,0) 60%), var(--card); }
-  .letter-card[data-scene="1"]{ background:linear-gradient(160deg, rgba(var(--amber-rgb),0.1), rgba(var(--rose-rgb),0.05) 70%), var(--card); border-color:rgba(var(--amber-rgb),0.22); }
-  .letter-card[data-scene="2"]{ background:linear-gradient(160deg, rgba(var(--rose-rgb),0.16), rgba(var(--amber-rgb),0.1) 75%), var(--card); border-color:rgba(var(--rose-rgb),0.32); }
-
-  .letter-chip{
-    display:inline-flex;
-    align-items:center;
-    gap:0.4em;
-    font-size:0.68rem;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    color:var(--amber);
-    background:rgba(var(--amber-rgb),0.1);
-    border:1px solid rgba(var(--amber-rgb),0.25);
-    padding:0.35em 0.8em;
-    border-radius:999px;
-    margin-bottom:1.1rem;
-  }
-
-  .letter-lines{ display:flex; flex-direction:column; gap:0.7rem; }
-  .letter-line{
-    height:8px;
-    border-radius:4px;
-    background:linear-gradient(90deg, rgba(242,240,236,0.16), rgba(242,240,236,0.05));
-    opacity:0;
-    transform:translateX(-6px);
-    transition:opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
-  }
-  .letter-line.is-on{ opacity:1; transform:translateX(0); }
-
-  .scene-text{
-    position:absolute;
-    top:50%;
-    max-width:300px;
-    transform:translateY(-50%);
-    font-size:clamp(1.05rem, 2vw, 1.35rem);
-    line-height:1.45;
-    letter-spacing:-0.02em;
-    color:var(--text-dim);
-    opacity:0;
-    filter:blur(14px);
-    z-index:1;
-  }
-  .scene-left{ right:calc(50% + 230px); text-align:right; }
-  .scene-right{ left:calc(50% + 230px); text-align:left; }
-
-  html.reduced-motion .scene-text{
-    position:static;
-    transform:none;
-    max-width:52ch;
-    text-align:center;
-    opacity:1;
-    filter:none;
-    margin:0 auto;
-  }
-
-  @media (max-width:900px){
-    .scene-text{ position:static; transform:none; max-width:88vw; text-align:center; margin:1.4rem auto 0; }
-    .letter-stage{ flex-direction:column; justify-content:center; gap:2rem; }
-  }
-
-  /* ================= FOOTER ================= */
-  .footer{
-    position:relative;
-    min-height:100vh;
-    padding:14vh 1.6rem 6rem;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-    gap:5rem;
-    overflow:hidden;
-  }
-
-  .footer-orbs{ position:absolute; top:0; right:0; width:min(52vw,620px); height:70%; z-index:0; }
-  @media (max-width:760px){ .footer-orbs{ width:100%; opacity:0.6; } }
-
-  .footer-headline{
-    position:relative;
-    z-index:1;
-    font-size:clamp(2.6rem, 8vw, 6.4rem);
-    font-weight:800;
-    letter-spacing:-0.04em;
-    line-height:1.02;
-    max-width:14ch;
-    filter:blur(16px);
-    opacity:0;
-  }
-  html.reduced-motion .footer-headline{ filter:none; opacity:1; }
-
-  .footer-bottom{
-    position:relative;
-    z-index:1;
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    gap:1.6rem 2.4rem;
-  }
-
-  .reply-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:0.6em;
-    padding:0.95em 1.7em;
-    border-radius:999px;
-    background:linear-gradient(100deg, var(--amber), var(--rose));
-    color:#0a0908;
-    font-weight:600;
-    font-size:0.95rem;
-    letter-spacing:-0.01em;
-    text-decoration:none;
-    box-shadow:0 20px 50px -20px rgba(var(--rose-rgb),0.55);
-    transition:transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
-  }
-  .reply-btn:hover{ transform:translateY(-2px); box-shadow:0 26px 60px -18px rgba(var(--rose-rgb),0.65); }
-
-  .know-link{
-    font-size:0.9rem;
-    color:var(--text-faint);
-    text-decoration:none;
-    border-bottom:1px solid transparent;
-    transition:color 0.3s ease, border-color 0.3s ease;
-  }
-  .know-link:hover{ color:var(--text); border-color:var(--text-faint); }
-
-  .footer-sign{
-    width:100%;
-    margin-top:0.6rem;
-    font-size:0.82rem;
-    color:var(--text-faint);
-    letter-spacing:-0.01em;
-  }
-
-  @media (max-width:640px){
-    .ghost-headline{ font-size:clamp(3.4rem, 26vw, 7rem); }
-    .hero-fg{ gap:1.2rem; }
-    .orbfield-copy{ font-size:1.3rem; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .wax-seal{ animation:none; }
-    .scroll-cue span{ animation:none; }
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A note, from me to you</title>
+  <meta name="description" content="A friendly note." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 40%, #fef3c7 100%);
+      color: #4a3b2f;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      line-height: 1.7;
+    }
+    .card {
+      background: #fffdf9;
+      max-width: 620px;
+      width: 100%;
+      border-radius: 24px;
+      padding: 48px 40px;
+      box-shadow: 0 20px 50px rgba(180, 120, 60, 0.15);
+      border: 1px solid #fde9c8;
+    }
+    .eyebrow {
+      display: inline-block;
+      background: #fde3c0;
+      color: #c26a1b;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #e08a2c;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: #9a8570;
+      font-size: 1.05rem;
+      margin-bottom: 28px;
+    }
+    p.body-text {
+      font-size: 1.1rem;
+      margin-bottom: 18px;
+      color: #574636;
+    }
+    .highlight { color: #d97a1f; font-weight: 700; }
+    .divider {
+      height: 1px;
+      background: #f2e2ca;
+      margin: 28px 0;
+    }
+    .sign {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #e08a2c;
+      margin-top: 8px;
+    }
+    .footer-line {
+      margin-top: 6px;
+      color: #9a8570;
+      font-size: 0.95rem;
+    }
+    @media (max-width: 520px) {
+      .card { padding: 34px 24px; }
+      h1 { font-size: 1.9rem; }
+    }
+  </style>
 </head>
 <body>
+  <main class="card">
+    <span class="eyebrow">A note, for you</span>
+    <h1>Hello, friend</h1>
+    <p class="subtitle">Just a few honest, good words.</p>
 
-  <div class="ambient" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
-  <div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="mark" aria-hidden="true">for you</div>
+    <p class="body-text">I'm really glad our paths crossed. Getting to know you has genuinely brightened my days.</p>
+    <p class="body-text">Honestly, I admire how hard you work. Catching that <span class="highlight">bus from Vashi to CSMT</span> every single day is no small thing &mdash; and you do it with such quiet determination.</p>
+    <p class="body-text">It's the kind of steadiness that's easy to overlook, but I notice it, and I think it says a lot about the kind of person you are.</p>
+    <p class="body-text">I know I'm still a stranger to you right now &mdash; but maybe I'd be lucky to have a friend like you: someone so sincere and genuine about her life, with a warmth that's easy to be around.</p>
+    <p class="body-text">No expectations, no pressure &mdash; I just value this new friendship and wanted you to know.</p>
 
-  <div id="smooth-wrapper">
-    <div id="smooth-content">
+    <div class="divider"></div>
 
-      <!-- ================= HERO ================= -->
-      <section class="hero" id="hero">
-        <div class="hero-pin">
-          <h1 class="ghost-headline" aria-hidden="true">Hello, friend</h1>
-
-          <div class="hero-fg">
-            <p class="eyebrow">A letter</p>
-            <div class="envelope" id="envelope">
-              <div class="envelope-body" id="envelopeBody">
-                <div class="envelope-open-layer" id="envelopeOpenLayer"></div>
-                <div class="envelope-paper" id="envelopePaper"></div>
-                <div class="wax-seal" id="waxSeal"></div>
-                <div class="envelope-flap" id="envelopeFlap"></div>
-              </div>
-              <p class="envelope-caption">Just some honest, good words. Open whenever you like.</p>
-            </div>
-          </div>
-
-          <div class="scroll-cue"><span></span>scroll</div>
-        </div>
-      </section>
-
-      <!-- ================= ORB FIELD ================= -->
-      <section class="orbfield-wrap" id="orbfieldWrap">
-        <div class="orbfield-stage">
-          <div class="orb-layer" id="orbLayer"></div>
-          <p class="orbfield-copy">I'm really glad our paths crossed. Getting to know you has genuinely brightened my days.</p>
-        </div>
-      </section>
-
-      <!-- ================= STATEMENT 1 ================= -->
-      <section class="statement statement-1">
-        <p class="statement-inner">Honestly, I admire how hard you work.</p>
-      </section>
-
-      <!-- ================= LETTER SCENES ================= -->
-      <section class="letter-scenes" id="letterScenes">
-        <div class="letter-stage">
-          <p class="scene-text scene-left" data-scene-text="0">Catching that bus from Vashi to CSMT every single day is no small thing — and you do it with such quiet determination.</p>
-
-          <div class="letter-card" id="letterCard" data-scene="0">
-            <span class="letter-chip" id="letterChip">Quiet strength…</span>
-            <div class="letter-lines" id="letterLines">
-              <div class="letter-line" style="width:88%"></div>
-              <div class="letter-line" style="width:64%"></div>
-              <div class="letter-line" style="width:76%"></div>
-              <div class="letter-line" style="width:52%"></div>
-              <div class="letter-line" style="width:80%"></div>
-              <div class="letter-line" style="width:60%"></div>
-              <div class="letter-line" style="width:70%"></div>
-              <div class="letter-line" style="width:44%"></div>
-            </div>
-          </div>
-
-          <p class="scene-text scene-right" data-scene-text="1">It's the kind of steadiness that's easy to overlook, but I notice it.</p>
-          <p class="scene-text scene-left" data-scene-text="2">And I think it says a lot about the kind of person you are.</p>
-        </div>
-      </section>
-
-      <!-- ================= STATEMENT 2 ================= -->
-      <section class="statement statement-2">
-        <p class="statement-inner">No expectations, no pressure — I just value this new friendship.</p>
-      </section>
-
-      <!-- ================= STATEMENT 3 ================= -->
-    <section class="statement statement-2">
-      <p class="statement-inner">I know I'm still a stranger to you right now — but maybe I'd be lucky to have a friend like you: someone so sincere and genuine about her life, with a warmth that's easy to be around.</p>
-    </section>
-
-    <!-- ================= FOOTER ================= -->
-      <footer class="footer">
-        <div class="footer-orbs" id="footerOrbs"></div>
-        <h2 class="footer-headline">Here's to more good conversations ahead.</h2>
-        <div class="footer-bottom">
-          <a class="reply-btn" href="#" id="replyBtn" onclick="return false;" aria-disabled="true">Reply whenever you feel like it</a>
-          <a class="know-link" href="https://www.linkedin.com/in/sanjeev-yadav-46592a258/" target="_blank" rel="noopener noreferrer">Get to know me →</a>
-          <span class="footer-sign">— Sanjeev</span>
-        </div>
-      </footer>
-
-    </div>
-  </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script>
-(function(){
-  "use strict";
-
-  var REDUCE_MOTION = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var orbGroups = []; // {els:[{el,baseX,baseY,ampX,ampY,freq,phase,depth}], parallax:0}
-
-  function rand(min, max){ return Math.random() * (max - min) + min; }
-
-  function buildOrbField(container, count, opts){
-    if(!container) return [];
-    var w = container.clientWidth || window.innerWidth;
-    var h = container.clientHeight || window.innerHeight;
-    var items = [];
-    for(var i=0;i<count;i++){
-      var size = rand(opts.min, opts.max);
-      var el = document.createElement('div');
-      el.className = 'orb';
-      el.style.width = size + 'px';
-      el.style.height = size + 'px';
-      var baseX = rand(size*-0.2, w - size*0.8);
-      var baseY = rand(size*-0.2, h - size*0.8);
-      el.style.left = baseX + 'px';
-      el.style.top = baseY + 'px';
-      el.style.opacity = rand(0.35, 0.85).toFixed(2);
-      container.appendChild(el);
-      items.push({
-        el: el,
-        baseX: baseX,
-        baseY: baseY,
-        ampX: rand(10, 34),
-        ampY: rand(14, 46),
-        freq: rand(0.15, 0.4),
-        phase: rand(0, Math.PI*2),
-        depth: rand(0.3, 1)
-      });
-    }
-    return items;
-  }
-
-  function driftOrbs(items, t, parallax){
-    for(var i=0;i<items.length;i++){
-      var o = items[i];
-      var dx = Math.sin(t*o.freq + o.phase) * o.ampX;
-      var dy = Math.cos(t*o.freq*0.8 + o.phase) * o.ampY - (parallax||0) * o.depth * 120;
-      o.el.style.transform = 'translate3d(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px,0)';
-    }
-  }
-
-  function setupSimpleReveals(){
-    var targets = document.querySelectorAll('.statement-inner, .footer-headline, .letter-card, .scene-text, .envelope');
-    if(!('IntersectionObserver' in window)){
-      targets.forEach(function(t){ t.style.opacity = 1; t.style.filter = 'none'; });
-      return;
-    }
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          entry.target.style.transition = 'opacity 0.7s ease';
-          entry.target.style.opacity = 1;
-          entry.target.style.filter = 'none';
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    targets.forEach(function(t){ io.observe(t); });
-
-    var lines = document.querySelectorAll('.letter-line');
-    lines.forEach(function(l){ l.classList.add('is-on'); });
-    var chip = document.getElementById('letterChip');
-    if(chip) chip.textContent = 'Sent with care ✓';
-    var card = document.getElementById('letterCard');
-    if(card) card.setAttribute('data-scene','2');
-
-    var openLayer = document.getElementById('envelopeOpenLayer');
-    if(openLayer) openLayer.style.opacity = 1;
-  }
-
-  function initSmoothScroll(){
-    var content = document.getElementById('smooth-content');
-    var target = window.scrollY || 0;
-    var current = target;
-    var ease = 0.085;
-
-    function resize(){
-      document.body.style.height = content.getBoundingClientRect().height + 'px';
-    }
-    resize();
-    window.addEventListener('resize', resize);
-    window.addEventListener('scroll', function(){ target = window.scrollY; }, { passive:true });
-
-    content.style.transform = 'translate3d(0,0,0)';
-
-    ScrollTrigger.scrollerProxy(document.body, {
-      scrollTop: function(value){
-        if(arguments.length){ target = value; window.scrollTo(0, value); return; }
-        return target;
-      },
-      getBoundingClientRect: function(){
-        return { top:0, left:0, width: window.innerWidth, height: window.innerHeight };
-      },
-      pinType: content.style.transform ? 'transform' : 'fixed'
-    });
-
-    gsap.ticker.add(function(){
-      current += (target - current) * ease;
-      if(Math.abs(target - current) < 0.05) current = target;
-      content.style.transform = 'translate3d(0,' + (-current).toFixed(1) + 'px,0)';
-      ScrollTrigger.update();
-    });
-
-    ScrollTrigger.addEventListener('refresh', resize);
-    ScrollTrigger.defaults({ scroller: document.body });
-    ScrollTrigger.refresh();
-  }
-
-  function setupProgressBar(){
-    var fill = document.getElementById('progressFill');
-    ScrollTrigger.create({
-      trigger: document.body,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: true,
-      onUpdate: function(self){ fill.style.transform = 'scaleX(' + self.progress.toFixed(3) + ')'; }
-    });
-  }
-
-  function setupHero(){
-    var tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '#hero',
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.6,
-        pin: '.hero-pin'
-      }
-    });
-
-    tl.to('.ghost-headline', { scale:1.6, filter:'blur(26px)', opacity:0.02, ease:'none' }, 0)
-      .to('#envelopeBody', { y:-46, ease:'none' }, 0)
-      .to('#envelopeOpenLayer', { opacity:1, ease:'none' }, 0)
-      .to('#envelopeFlap', { rotateX:-130, opacity:0.5, ease:'none' }, 0)
-      .to('#waxSeal', { y:-18, scale:0.5, opacity:0, ease:'none' }, 0.05)
-      .to('#envelopePaper', { y:'2%', ease:'none' }, 0)
-      .to('.scroll-cue', { opacity:0, ease:'none' }, 0);
-  }
-
-  function setupOrbFieldScroll(){
-    var layer = document.getElementById('orbLayer');
-    var items = buildOrbField(layer, 16, { min:34, max:150 });
-    orbGroups.push({ items: items, parallax: 0 });
-
-    ScrollTrigger.create({
-      trigger: '#orbfieldWrap',
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: true,
-      pin: '.orbfield-stage',
-      onUpdate: function(self){ orbGroups[orbGroups.length-1].parallax = self.progress - 0.5; }
-    });
-
-    gsap.from('.orbfield-copy', {
-      opacity:0, y:20, filter:'blur(10px)',
-      scrollTrigger: { trigger:'#orbfieldWrap', start:'top center', end:'top+=40% center', scrub:true }
-    });
-  }
-
-  function setupStatement(selector){
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: selector,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true
-      }
-    })
-    .fromTo(selector, { filter:'blur(18px)', opacity:0, y:26 }, { filter:'blur(0px)', opacity:1, y:0, duration:1, ease:'none' })
-    .to(selector, { filter:'blur(18px)', opacity:0, y:-26, duration:1, ease:'none' });
-  }
-
-  function setupLetterScenes(){
-    var chip = document.getElementById('letterChip');
-    var card = document.getElementById('letterCard');
-    var lines = document.querySelectorAll('.letter-line');
-    var sceneTexts = document.querySelectorAll('[data-scene-text]');
-    var chips = ['Quiet strength…', 'A good friend… 71%', 'Sent with care ✓'];
-
-    function windowFor(i){ return [i/3, (i+0.5)/3, (i+1)/3]; }
-
-    ScrollTrigger.create({
-      trigger: '#letterScenes',
-      start: 'top top',
-      end: 'bottom bottom',
-      pin: '.letter-stage',
-      scrub: 0.6,
-      onUpdate: function(self){
-        var p = self.progress;
-
-        var lineCount = Math.round(p * lines.length);
-        lines.forEach(function(l, idx){ l.classList.toggle('is-on', idx < lineCount); });
-
-        var sceneIdx = Math.min(2, Math.floor(p * 3));
-        if(chip.textContent !== chips[sceneIdx]) chip.textContent = chips[sceneIdx];
-        if(card.getAttribute('data-scene') !== String(sceneIdx)) card.setAttribute('data-scene', String(sceneIdx));
-
-        sceneTexts.forEach(function(el){
-          var i = parseInt(el.getAttribute('data-scene-text'), 10);
-          var w = windowFor(i);
-          var dist;
-          if(p < w[0] || p > w[2]){
-            dist = 1;
-          } else if(p <= w[1]){
-            dist = 1 - (p - w[0]) / (w[1] - w[0]);
-          } else {
-            dist = (p - w[1]) / (w[2] - w[1]);
-          }
-          dist = Math.min(1, Math.max(0, dist));
-          el.style.opacity = (1 - dist).toFixed(2);
-          el.style.filter = 'blur(' + (dist * 14).toFixed(1) + 'px)';
-        });
-      }
-    });
-  }
-
-  function setupFooter(){
-    gsap.timeline({
-      scrollTrigger: { trigger:'.footer-headline', start:'top 85%', end:'top 35%', scrub:true }
-    }).fromTo('.footer-headline', { filter:'blur(16px)', opacity:0, y:24 }, { filter:'blur(0px)', opacity:1, y:0, ease:'none' });
-
-    var layer = document.getElementById('footerOrbs');
-    var items = buildOrbField(layer, 7, { min:24, max:110 });
-    orbGroups.push({ items: items, parallax: 0 });
-  }
-
-  function startOrbLoop(){
-    function loop(){
-      var t = performance.now() / 1000;
-      orbGroups.forEach(function(g){ driftOrbs(g.items, t, g.parallax); });
-      requestAnimationFrame(loop);
-    }
-    requestAnimationFrame(loop);
-  }
-
-  function init(){
-    if(REDUCE_MOTION){
-      document.documentElement.classList.add('reduced-motion');
-      buildOrbField(document.getElementById('orbLayer'), 10, { min:30, max:120 });
-      buildOrbField(document.getElementById('footerOrbs'), 6, { min:24, max:100 });
-      setupSimpleReveals();
-      return;
-    }
-
-    if(typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined'){
-      document.documentElement.classList.add('reduced-motion');
-      buildOrbField(document.getElementById('orbLayer'), 10, { min:30, max:120 });
-      buildOrbField(document.getElementById('footerOrbs'), 6, { min:24, max:100 });
-      setupSimpleReveals();
-      return;
-    }
-
-    gsap.registerPlugin(ScrollTrigger);
-    initSmoothScroll();
-    setupProgressBar();
-    setupHero();
-    setupOrbFieldScroll();
-    setupStatement('.statement-1 .statement-inner');
-    setupStatement('.statement-2 .statement-inner');
-    setupLetterScenes();
-    setupFooter();
-    startOrbLoop();
-    ScrollTrigger.refresh(); // pin spacers change #smooth-content's height after each section is set up
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-</script>
+    <p class="body-text">Here's to more good conversations ahead.</p>
+    <p class="sign">&mdash; Sanjeev</p>
+    <p class="footer-line">Reply whenever you feel like it.</p>
+  </main>
 </body>
 </html>
