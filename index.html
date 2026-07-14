@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>A letter. Honesty, finally in words.</title>
-<meta name="description" content="A personal, honest letter." />
+<title>A note. A few honest, good words.</title>
+<meta name="description" content="A friendly note." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -509,7 +509,7 @@
       <!-- ================= HERO ================= -->
       <section class="hero" id="hero">
         <div class="hero-pin">
-          <h1 class="ghost-headline" aria-hidden="true">I'm Sorry</h1>
+          <h1 class="ghost-headline" aria-hidden="true">Hello, friend</h1>
 
           <div class="hero-fg">
             <p class="eyebrow">A letter</p>
@@ -520,7 +520,7 @@
                 <div class="wax-seal" id="waxSeal"></div>
                 <div class="envelope-flap" id="envelopeFlap"></div>
               </div>
-              <p class="envelope-caption">Honesty, finally in words. Open when you're ready.</p>
+              <p class="envelope-caption">Just some honest, good words. Open whenever you like.</p>
             </div>
           </div>
 
@@ -532,22 +532,22 @@
       <section class="orbfield-wrap" id="orbfieldWrap">
         <div class="orbfield-stage">
           <div class="orb-layer" id="orbLayer"></div>
-          <p class="orbfield-copy">I want to apologize if I made you uncomfortable yesterday — that was never my intention.</p>
+          <p class="orbfield-copy">I'm really glad our paths crossed. Getting to know you has genuinely brightened my days.</p>
         </div>
       </section>
 
       <!-- ================= STATEMENT 1 ================= -->
       <section class="statement statement-1">
-        <p class="statement-inner">The truth is, I've developed feelings for you.</p>
+        <p class="statement-inner">Honestly, I admire how hard you work.</p>
       </section>
 
       <!-- ================= LETTER SCENES ================= -->
       <section class="letter-scenes" id="letterScenes">
         <div class="letter-stage">
-          <p class="scene-text scene-left" data-scene-text="0">I once spent four years hoping someone would talk to me.</p>
+          <p class="scene-text scene-left" data-scene-text="0">Catching that bus from Vashi to CSMT every single day is no small thing — and you do it with such quiet determination.</p>
 
           <div class="letter-card" id="letterCard" data-scene="0">
-            <span class="letter-chip" id="letterChip">Gathering courage…</span>
+            <span class="letter-chip" id="letterChip">Quiet strength…</span>
             <div class="letter-lines" id="letterLines">
               <div class="letter-line" style="width:88%"></div>
               <div class="letter-line" style="width:64%"></div>
@@ -560,23 +560,23 @@
             </div>
           </div>
 
-          <p class="scene-text scene-right" data-scene-text="1">A recent hurtful rejection left me genuinely afraid of opening up again.</p>
-          <p class="scene-text scene-left" data-scene-text="2">I hesitated because I feared you might distance yourself the same way.</p>
+          <p class="scene-text scene-right" data-scene-text="1">It's the kind of steadiness that's easy to overlook, but I notice it.</p>
+          <p class="scene-text scene-left" data-scene-text="2">And I think it says a lot about the kind of person you are.</p>
         </div>
       </section>
 
       <!-- ================= STATEMENT 2 ================= -->
       <section class="statement statement-2">
-        <p class="statement-inner">But I felt you deserved honesty.</p>
+        <p class="statement-inner">No expectations, no pressure — I just value this new friendship.</p>
       </section>
 
       <!-- ================= FOOTER ================= -->
       <footer class="footer">
         <div class="footer-orbs" id="footerOrbs"></div>
-        <h2 class="footer-headline">No pressure. Just honesty.</h2>
+        <h2 class="footer-headline">Here's to more good conversations ahead.</h2>
         <div class="footer-bottom">
-          <a class="reply-btn" href="#" id="replyBtn" onclick="return false;" aria-disabled="true">Reply whenever you're ready</a>
-          <a class="know-link" href="https://www.linkedin.com/in/sanjeev-yadav-46592a258/" target="_blank" rel="noopener noreferrer">Know me better →</a>
+          <a class="reply-btn" href="#" id="replyBtn" onclick="return false;" aria-disabled="true">Reply whenever you feel like it</a>
+          <a class="know-link" href="https://www.linkedin.com/in/sanjeev-yadav-46592a258/" target="_blank" rel="noopener noreferrer">Get to know me →</a>
           <span class="footer-sign">— Sanjeev</span>
         </div>
       </footer>
@@ -656,7 +656,7 @@
     var lines = document.querySelectorAll('.letter-line');
     lines.forEach(function(l){ l.classList.add('is-on'); });
     var chip = document.getElementById('letterChip');
-    if(chip) chip.textContent = 'Said it ✓';
+    if(chip) chip.textContent = 'Sent with care ✓';
     var card = document.getElementById('letterCard');
     if(card) card.setAttribute('data-scene','2');
 
@@ -771,7 +771,7 @@
     var card = document.getElementById('letterCard');
     var lines = document.querySelectorAll('.letter-line');
     var sceneTexts = document.querySelectorAll('[data-scene-text]');
-    var chips = ['Gathering courage…', 'Being honest… 71%', 'Said it ✓'];
+    var chips = ['Quiet strength…', 'A good friend… 71%', 'Sent with care ✓'];
 
     function windowFor(i){ return [i/3, (i+0.5)/3, (i+1)/3]; }
 
