@@ -1,122 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>A note, from me to you</title>
-<meta name="description" content="A friendly note." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
-background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 40%, #fef3c7 100%);
-color: #4a3b2f;
-min-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 24px;
-line-height: 1.7;
-}
-.card {
-background: #fffdf9;
-max-width: 620px;
-width: 100%;
-border-radius: 24px;
-padding: 48px 40px;
-box-shadow: 0 20px 50px rgba(180, 120, 60, 0.15);
-border: 1px solid #fde9c8;
-}
-.eyebrow {
-display: inline-block;
-background: #fde3c0;
-color: #c26a1b;
-font-size: 0.8rem;
-font-weight: 700;
-letter-spacing: 0.08em;
-text-transform: uppercase;
-padding: 6px 14px;
-border-radius: 999px;
-margin-bottom: 20px;
-}
-h1 {
-font-size: 2.4rem;
-font-weight: 800;
-color: #e08a2c;
-margin-bottom: 8px;
-}
-.subtitle {
-color: #9a8570;
-font-size: 1.05rem;
-margin-bottom: 28px;
-}
-p.body-text {
-font-size: 1.1rem;
-margin-bottom: 18px;
-color: #574636;
-}
-.highlight { color: #d97a1f; font-weight: 700; }
-.divider {
-height: 1px;
-background: #f2e2ca;
-margin: 28px 0;
-}
-.sign {
-font-size: 1.15rem;
-font-weight: 700;
-color: #e08a2c;
-margin-top: 8px;
-}
-.footer-line {
-margin-top: 6px;
-color: #9a8570;
-font-size: 0.95rem;
-}
-@media (max-width: 520px) {
-.card { padding: 34px 24px; }
-h1 { font-size: 1.9rem; }
-}
-.linkedin-wrap { margin-top: 26px; }
-.linkedin-wrap .ask { font-size: 1.1rem; color: #574636; margin-bottom: 14px; }
-.linkedin-btn {
-display: inline-block;
-background: #d97a1f;
-color: #fffdf9;
-text-decoration: none;
-font-weight: 700;
-padding: 12px 22px;
-border-radius: 999px;
-transition: background 0.2s ease;
-}
-.linkedin-btn:hover { background: #c26a1b; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A note, from me to you</title>
+  <meta name="description" content="A friendly note." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 40%, #fef3c7 100%);
+      color: #4a3b2f;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      line-height: 1.7;
+    }
+    .card {
+      background: #fffdf9;
+      max-width: 620px;
+      width: 100%;
+      border-radius: 24px;
+      padding: 48px 40px;
+      box-shadow: 0 20px 50px rgba(180, 120, 60, 0.15);
+      border: 1px solid #fde9c8;
+    }
+    .eyebrow {
+      display: inline-block;
+      background: #fde3c0;
+      color: #c26a1b;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #e08a2c;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: #9a8570;
+      font-size: 1.05rem;
+      margin-bottom: 28px;
+    }
+    p.body-text {
+      font-size: 1.1rem;
+      margin-bottom: 18px;
+      color: #574636;
+    }
+    .highlight { color: #d97a1f; font-weight: 700; }
+    .divider {
+      height: 1px;
+      background: #f2e2ca;
+      margin: 28px 0;
+    }
+    .sign {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #e08a2c;
+      margin-top: 8px;
+    }
+    .footer-line {
+      margin-top: 6px;
+      color: #9a8570;
+      font-size: 0.95rem;
+    }
+    @media (max-width: 520px) {
+      .card { padding: 34px 24px; }
+      h1 { font-size: 1.9rem; }
+    }
+    .linkedin-wrap { margin-top: 26px; }
+    .linkedin-wrap .ask { font-size: 1.1rem; color: #574636; margin-bottom: 14px; }
+    .linkedin-btn {
+      display: inline-block;
+      background: #d97a1f;
+      color: #fffdf9;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 12px 22px;
+      border-radius: 999px;
+      transition: background 0.2s ease;
+    }
+    .linkedin-btn:hover { background: #c26a1b; }
+  </style>
 </head>
 <body>
-<main class="card">
-<span class="eyebrow">A slightly goofy note, for you</span>
-<h1>Hello, friend (yes, you)</h1>
-<p class="subtitle">A few honest words.</p>
-<p class="body-text">Fun fact about me: I can chat with total strangers all day long. But talking to girls at first? Suddenly I forget how sentences work. Give it a little time though, and you won't be able to get me to stop talking.</p>
+  <main class="card">
+    <span class="eyebrow">A slightly goofy note, for you</span>
+    <h1>Hello, friend (yes, you)</h1>
+    <p class="subtitle">A few honest words.</p>
+    <p class="body-text">Fun fact about me: I can chat with total strangers all day long. But talking to girls at first? Suddenly I forget how sentences work. Give it a little time though, and you won't be able to get me to stop talking.</p>
 
-<p class="body-text">I'm genuinely glad our paths crossed. Getting to know you has been the unexpected plot twist my week needed.</p>
-<p class="body-text">Also, real talk &mdash; I'm impressed by you. Catching that <span class="highlight">bus from Vashi to CSMT</span> every single day deserves its own medal, or at least a loyalty card. That kind of quiet determination? Rare stuff.</p>
-<p class="body-text">It's the sort of thing most people wouldn't notice. I did. It says a lot about you, and all of it good.</p>
-<p class="body-text">I know I'm still basically "that person you met recently," but I've got a good feeling &mdash; someone this sincere and genuinely warm seems like an excellent friend to have around.</p>
-<p class="body-text">No pressure, no grand expectations, no dramatic background music. I just think this friendship is worth a shot, and I wanted you to know.</p>
+    <p class="body-text">I'm genuinely glad our paths crossed. Getting to know you has been the unexpected plot twist my week needed.</p>
+    <p class="body-text">Also, real talk &mdash; I'm impressed by you. Catching that <span class="highlight">bus from Vashi to CSMT</span> every single day deserves its own medal, or at least a loyalty card. That kind of quiet determination? Rare stuff.</p>
+    <p class="body-text">It's the sort of thing most people wouldn't notice. I did. It says a lot about you, and all of it good.</p>
+    <p class="body-text">I know I'm still basically "that person you met recently," but I've got a good feeling &mdash; someone this sincere and genuinely warm seems like an excellent friend to have around.</p>
+    <p class="body-text">Also &mdash; do you call everyone bhaiya, or just me? Do I really give off that much of a "bhaiya" vibe?</p>
+    <p class="body-text">No pressure, no grand expectations, no dramatic background music. I just think this friendship is worth a shot, and I wanted you to know.</p>
 
-<div class="divider"></div>
+    <div class="divider"></div>
 
-<p class="body-text">Here's to more good conversations &mdash; and hopefully a few terrible jokes.</p>
-<p class="sign">&mdash; Sanjeev</p>
-<p class="footer-line">Reply whenever. Or never. But preferably whenever. &#128516;</p>
+    <p class="body-text">Here's to more good conversations &mdash; and hopefully a few terrible jokes.</p>
+    <p class="sign">&mdash; Sanjeev</p>
+    <p class="footer-line">Reply whenever. Or never. But preferably whenever. &#128516;</p>
 
-<div class="linkedin-wrap">
-<p class="ask">So&hellip; after a quick peek at my LinkedIn to confirm I'm a real, mostly-normal human &mdash; friends?</p>
-<a class="linkedin-btn" href="https://www.linkedin.com/in/sanjeev-yadav-46592a258/" target="_blank" rel="noopener noreferrer">Visit my LinkedIn &rarr;</a>
-</div>
-</main>
+    <div class="linkedin-wrap">
+      <p class="ask">So&hellip; after a quick peek at my LinkedIn to confirm I'm a real, mostly-normal human &mdash; friends?</p>
+      <a class="linkedin-btn" href="https://www.linkedin.com/in/sanjeev-yadav-46592a258/" target="_blank" rel="noopener noreferrer">Visit my LinkedIn &rarr;</a>
+    </div>
+  </main>
 </body>
 </html>
