@@ -1,102 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>A note, from me to you</title>
-  <meta name="description" content="A friendly note." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 40%, #fef3c7 100%);
-      color: #4a3b2f;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      line-height: 1.7;
-    }
-    .card {
-      background: #fffdf9;
-      max-width: 620px;
-      width: 100%;
-      border-radius: 24px;
-      padding: 48px 40px;
-      box-shadow: 0 20px 50px rgba(180, 120, 60, 0.15);
-      border: 1px solid #fde9c8;
-    }
-    .eyebrow {
-      display: inline-block;
-      background: #fde3c0;
-      color: #c26a1b;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 20px;
-    }
-    h1 {
-      font-size: 2.4rem;
-      font-weight: 800;
-      color: #e08a2c;
-      margin-bottom: 8px;
-    }
-    .subtitle {
-      color: #9a8570;
-      font-size: 1.05rem;
-      margin-bottom: 28px;
-    }
-    p.body-text {
-      font-size: 1.1rem;
-      margin-bottom: 18px;
-      color: #574636;
-    }
-    .highlight { color: #d97a1f; font-weight: 700; }
-    .divider {
-      height: 1px;
-      background: #f2e2ca;
-      margin: 28px 0;
-    }
-    .sign {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #e08a2c;
-      margin-top: 8px;
-    }
-    .footer-line {
-      margin-top: 6px;
-      color: #9a8570;
-      font-size: 0.95rem;
-    }
-    @media (max-width: 520px) {
-      .card { padding: 34px 24px; }
-      h1 { font-size: 1.9rem; }
-    }
-    .linkedin-wrap { margin-top: 26px; }
-    .linkedin-wrap .ask { font-size: 1.1rem; color: #574636; margin-bottom: 14px; }
-    .linkedin-btn {
-      display: inline-block;
-      background: #d97a1f;
-      color: #fffdf9;
-      text-decoration: none;
-      font-weight: 700;
-      padding: 12px 22px;
-      border-radius: 999px;
-      transition: background 0.2s ease;
-    }
-    .linkedin-btn:hover { background: #c26a1b; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>A note, from me to you</title>
+<meta name="description" content="A friendly note." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<style>
+:root{
+  --bg1:#fff7ed; --bg2:#ffedd5; --bg3:#fef3c7;
+  --card:#fffdf9; --cardBorder:#fde9c8;
+  --text:#574636; --muted:#9a8570; --heading:#e08a2c;
+  --accent:#d97a1f; --accentDark:#c26a1b;
+  --pill:#fde3c0; --pillText:#c26a1b; --divider:#f2e2ca;
+  --shadow:0 20px 50px rgba(180,120,60,.15);
+}
+[data-theme="dark"]{
+  --bg1:#1a1410; --bg2:#241a12; --bg3:#2c1f14;
+  --card:#241c15; --cardBorder:#3a2c1e;
+  --text:#ecdcc8; --muted:#b39c82; --heading:#f4a94a;
+  --accent:#f0a94a; --accentDark:#d98e2f;
+  --pill:#3a2c1e; --pillText:#f4c98a; --divider:#3a2c1e;
+  --shadow:0 20px 50px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 40%,var(--bg3) 100%);
+  color:var(--text);
+  min-height:100vh;
+  padding:24px;
+  line-height:1.7;
+  transition:background .5s ease,color .5s ease;
+  overflow-x:hidden;
+}
+h1,h2,.eyebrow,.linkedin-btn,.poll-title{font-family:'Outfit',sans-serif;}
+
+/* ---------- Theme toggle ---------- */
+.theme-toggle{
+  position:fixed;top:18px;right:18px;z-index:50;
+  background:var(--card);border:1px solid var(--cardBorder);
+  color:var(--text);font-size:1.2rem;cursor:pointer;
+  width:46px;height:46px;border-radius:50%;
+  box-shadow:var(--shadow);transition:transform .2s ease,background .3s ease;
+}
+.theme-toggle:hover{transform:scale(1.1) rotate(15deg);}
+
+/* ---------- Envelope ---------- */
+.stage{min-height:100vh;display:flex;align-items:center;justify-content:center;}
+.envelope-wrapper{
+  position:relative;width:340px;height:230px;cursor:pointer;
+  perspective:1200px;transition:opacity .5s ease,transform .6s ease;
+}
+.envelope-wrapper.opened{opacity:0;transform:scale(.6) translateY(40px);pointer-events:none;}
+.envelope{
+  position:absolute;inset:0;border-radius:12px;
+  background:linear-gradient(135deg,#f4c987 0%,#e6a94a 100%);
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.env-body{position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,#f6d194,#eab35c);}
+.env-flap{
+  position:absolute;top:0;left:0;width:100%;height:50%;
+  background:linear-gradient(135deg,#efc179,#e2a94a);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top;transition:transform .6s ease;z-index:4;
+}
+.envelope-wrapper.opened .env-flap{transform:rotateX(180deg);z-index:1;}
+.env-pocket{
+  position:absolute;bottom:0;left:0;width:100%;height:75%;
+  background:linear-gradient(135deg,#f2c880,#e6a94a);
+  clip-path:polygon(0 100%,50% 25%,100% 100%);
+  z-index:5;
+}
+.wax-seal{
+  position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);
+  width:56px;height:56px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#ff6b6b,#c0392b);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1.4rem;z-index:6;
+  box-shadow:0 4px 14px rgba(192,57,43,.5);
+  animation:pulse 1.6s ease-in-out infinite;
+}
+.envelope-wrapper.opened .wax-seal{opacity:0;transition:opacity .3s ease;}
+@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.12);}}
+.tap-hint{
+  position:absolute;bottom:-42px;left:0;width:100%;text-align:center;
+  color:var(--muted);font-weight:700;font-size:.95rem;
+  animation:bob 2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+/* ---------- Letter ---------- */
+.letter{
+  max-width:640px;width:100%;margin:0 auto;
+  opacity:0;transform:translateY(60px) scale(.9);
+  transition:opacity .7s ease .2s,transform .7s ease .2s;
+  pointer-events:none;
+}
+.letter.revealed{opacity:1;transform:none;pointer-events:auto;}
+.card{
+  background:var(--card);border-radius:24px;padding:48px 40px;
+  box-shadow:var(--shadow);border:1px solid var(--cardBorder);
+  transition:background .5s ease,border-color .5s ease;
+}
+.eyebrow{
+  display:inline-block;background:var(--pill);color:var(--pillText);
+  font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:6px 14px;border-radius:999px;margin-bottom:20px;
+}
+h1{font-size:2.4rem;font-weight:800;color:var(--heading);margin-bottom:8px;}
+.subtitle{color:var(--muted);font-size:1.05rem;margin-bottom:28px;}
+p.body-text{font-size:1.1rem;margin-bottom:18px;color:var(--text);}
+.highlight{color:var(--accent);font-weight:700;}
+.divider{height:1px;background:var(--divider);margin:28px 0;}
+.sign{font-size:1.15rem;font-weight:700;color:var(--heading);margin-top:8px;}
+.footer-line{margin-top:6px;color:var(--muted);font-size:.95rem;}
+
+/* ---------- Bus track ---------- */
+.bus-track{
+  position:relative;margin:34px 0 10px;padding:34px 0 8px;
+  border-top:1px dashed var(--divider);
+}
+.bus-title{font-family:'Outfit',sans-serif;font-weight:700;color:var(--heading);margin-bottom:26px;font-size:1.15rem;}
+.route-line{position:relative;height:4px;background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 20px);border-radius:2px;margin:40px 6px;}
+.bus-icon{position:absolute;top:-30px;left:0;font-size:1.8rem;transition:left .15s linear;transform:translateX(-50%);}
+.stops{display:flex;justify-content:space-between;margin-top:14px;}
+.stop{flex:1;text-align:center;font-size:.85rem;color:var(--muted);opacity:.5;transition:opacity .3s ease,transform .3s ease;padding:0 4px;}
+.stop.active{opacity:1;transform:translateY(-2px);color:var(--text);font-weight:700;}
+.stop .dot{display:block;width:12px;height:12px;border-radius:50%;background:var(--divider);margin:0 auto 6px;transition:background .3s ease,transform .3s ease;}
+.stop.active .dot{background:var(--accent);transform:scale(1.4);}
+.stop .msg{display:block;font-size:.72rem;margin-top:3px;min-height:2.2em;}
+
+/* ---------- Poll ---------- */
+.poll-container{
+  margin:30px 0;padding:24px;border-radius:18px;
+  background:var(--pill);border:1px solid var(--cardBorder);
+}
+.poll-title{font-weight:700;color:var(--pillText);margin-bottom:16px;font-size:1.15rem;}
+.poll-opt{
+  display:block;width:100%;text-align:left;cursor:pointer;
+  background:var(--card);border:1px solid var(--cardBorder);color:var(--text);
+  font-family:'Nunito',sans-serif;font-size:1rem;font-weight:600;
+  padding:13px 16px;border-radius:12px;margin-bottom:10px;
+  transition:transform .15s ease,box-shadow .15s ease,background .2s ease;
+}
+.poll-opt:hover{transform:translateX(4px);box-shadow:0 6px 16px rgba(180,120,60,.18);}
+.poll-opt.chosen{background:var(--accent);color:#fffdf9;border-color:var(--accent);}
+.poll-result{
+  margin-top:8px;font-weight:700;color:var(--pillText);font-size:1.02rem;
+  opacity:0;max-height:0;overflow:hidden;transition:opacity .4s ease,max-height .4s ease;
+}
+.poll-result.show{opacity:1;max-height:120px;margin-top:14px;}
+
+/* ---------- LinkedIn ---------- */
+.linkedin-wrap{margin-top:26px;}
+.linkedin-wrap .ask{font-size:1.1rem;color:var(--text);margin-bottom:14px;}
+.linkedin-btn{
+  display:inline-block;background:var(--accent);color:#fffdf9;text-decoration:none;
+  font-weight:700;padding:12px 22px;border-radius:999px;cursor:pointer;
+  transition:background .2s ease,transform .2s ease,box-shadow .2s ease;
+}
+.linkedin-btn:hover{background:var(--accentDark);transform:scale(1.08);box-shadow:0 10px 24px rgba(217,122,31,.4);}
+
+@media (max-width:520px){.card{padding:34px 24px;}h1{font-size:1.9rem;}.stop{font-size:.75rem;}.stop .msg{display:none;}}
+
+.float-emoji{position:fixed;pointer-events:none;font-size:1.6rem;z-index:60;animation:floatUp 1.6s ease-out forwards;}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(.6);}100%{opacity:0;transform:translateY(-140px) scale(1.3);}}
+</style>
 </head>
 <body>
+<button class="theme-toggle" id="themeToggle" title="Toggle vibe mode" aria-label="Toggle dark or light mode">&#127769;</button>
+
+<div class="stage" id="stage">
+  <div class="envelope-wrapper" id="envelope" role="button" tabindex="0" aria-label="Open the letter">
+    <div class="env-body"></div>
+    <div class="env-flap"></div>
+    <div class="env-pocket"></div>
+    <div class="wax-seal">&#128156;</div>
+    <div class="tap-hint">Tap to open &#9993;&#65039;</div>
+  </div>
+</div>
+
+<div class="letter" id="letter">
   <main class="card">
-      <p class="body-text" style="text-align:center; font-weight:700;">Dikha Yeh rahe hai lekin sabd humaare hai</p>
+    <p class="body-text" style="text-align:center; font-weight:700;">Dikha Yeh rahe hai lekin sabd humaare hai</p>
     <span class="eyebrow">A slightly goofy note, for you</span>
     <h1>Hello, friend (yes, you)</h1>
     <p class="subtitle">A few honest words.</p>
@@ -104,11 +195,31 @@
 
     <p class="body-text">I'm genuinely glad our paths crossed. Getting to know you has been the unexpected plot twist my week needed.</p>
     <p class="body-text">Also, real talk &mdash; I'm impressed by you. Catching that <span class="highlight">bus from Vashi to CSMT</span> every single day deserves its own medal, or at least a loyalty card. That kind of quiet determination? Rare stuff.</p>
+
+    <div class="bus-track">
+      <p class="bus-title">&#128652; The daily Vashi &rarr; CSMT saga (scroll to ride along)</p>
+      <div class="route-line"><span class="bus-icon" id="busIcon">&#128652;</span></div>
+      <div class="stops" id="stops">
+        <div class="stop" data-msg="Journey starts! &#127937;"><span class="dot"></span>Vashi<span class="msg"></span></div>
+        <div class="stop" data-msg="Hold on tight, the crowd is coming! &#128499;"><span class="dot"></span>Mankhurd<span class="msg"></span></div>
+        <div class="stop" data-msg="Traffic jam! Time to overthink. &#128678;"><span class="dot"></span>Kurla<span class="msg"></span></div>
+        <div class="stop" data-msg="Survival! Medal awarded. &#127941;"><span class="dot"></span>CSMT<span class="msg"></span></div>
+      </div>
+    </div>
+
     <p class="body-text">It's the sort of thing most people wouldn't notice. I did. It says a lot about you, and all of it good.</p>
     <p class="body-text">I know I'm still basically "that person you met recently," but I've got a good feeling &mdash; someone this sincere and genuinely warm seems like an excellent friend to have around.</p>
-    <p class="body-text">Also &mdash; do you call everyone bhaiya, or just me? Do I really give off that much of a "bhaiya" vibe?</p>
-      <p class="body-text">And hey &mdash; if reading all this made you go "oh no, I do overthink everything," then same, welcome to the club. Just send me a request on LinkedIn and I'll take it as your way of saying you want to socialize the fun, lighthearted way.</p>
-      <p class="body-text">I just think this friendship is worth a shot, and I wanted you to know.</p>
+
+    <div class="poll-container">
+      <p class="poll-title">Vibe check &#129488; &mdash; do I really give off that much of a "bhaiya" vibe?</p>
+      <button class="poll-opt" data-result="Ouch! &#129657; Someone call a doctor. But fine, I will earn my promotion to friend status!">Yes, 100% bhaiya vibe!</button>
+      <button class="poll-opt" data-result="Phew! &#128517; I'll take that. Progress!">Maybe a little, but there's hope.</button>
+      <button class="poll-opt" data-confetti="1" data-result="&#127881; You've made my day. Medal awarded for your excellent judgment! &#127941;">No way! Definitely friend material.</button>
+      <div class="poll-result" id="pollResult"></div>
+    </div>
+
+    <p class="body-text">And hey &mdash; if reading all this made you go "oh no, I do overthink everything," then same, welcome to the club. Just send me a request on LinkedIn and I'll take it as your way of saying you want to socialize the fun, lighthearted way.</p>
+    <p class="body-text">I just think this friendship is worth a shot, and I wanted you to know.</p>
 
     <div class="divider"></div>
 
@@ -118,8 +229,107 @@
 
     <div class="linkedin-wrap">
       <p class="ask">So&hellip; after a quick peek at my LinkedIn to confirm I'm a real, mostly-normal human &mdash; friends?</p>
-      <a class="linkedin-btn" href="https://www.linkedin.com/in/sanjeev-yadav-46592a258/" target="_blank" rel="noopener noreferrer">Visit my LinkedIn &rarr;</a>
+      <a class="linkedin-btn" id="linkedinBtn" href="https://www.linkedin.com/in/sanjeev-yadav-46592a258/" target="_blank" rel="noopener">Visit my LinkedIn &rarr;</a>
     </div>
   </main>
+</div>
+
+<script>
+(function(){
+  /* ---------- Envelope open ---------- */
+  var envelope=document.getElementById('envelope');
+  var letter=document.getElementById('letter');
+  var stage=document.getElementById('stage');
+  function openLetter(){
+    if(envelope.classList.contains('opened'))return;
+    envelope.classList.add('opened');
+    setTimeout(function(){
+      stage.style.minHeight='0';stage.style.height='0';stage.style.overflow='hidden';
+      letter.classList.add('revealed');
+      letter.scrollIntoView({behavior:'smooth'});
+      updateBus();
+    },500);
+    burst(0.5,0.4,60);
+  }
+  envelope.addEventListener('click',openLetter);
+  envelope.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openLetter();}});
+
+  /* ---------- Bus scroll ---------- */
+  var busIcon=document.getElementById('busIcon');
+  var stops=Array.prototype.slice.call(document.querySelectorAll('.stop'));
+  function updateBus(){
+    var track=document.querySelector('.bus-track');
+    if(!track)return;
+    var docH=document.documentElement.scrollHeight-window.innerHeight;
+    var prog=docH>0?Math.min(1,Math.max(0,window.scrollY/docH)):0;
+    busIcon.style.left=(prog*100)+'%';
+    var idx=Math.min(stops.length-1,Math.floor(prog*stops.length+0.001));
+    stops.forEach(function(s,i){
+      var msgEl=s.querySelector('.msg');
+      if(i<=idx){
+        s.classList.add('active');
+        if(msgEl && !msgEl.textContent){msgEl.innerHTML=s.getAttribute('data-msg');}
+      }else{
+        s.classList.remove('active');
+      }
+    });
+  }
+  window.addEventListener('scroll',updateBus,{passive:true});
+  window.addEventListener('resize',updateBus);
+
+  /* ---------- Poll ---------- */
+  var opts=document.querySelectorAll('.poll-opt');
+  var pollResult=document.getElementById('pollResult');
+  opts.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      opts.forEach(function(b){b.classList.remove('chosen');});
+      btn.classList.add('chosen');
+      pollResult.innerHTML=btn.getAttribute('data-result');
+      pollResult.classList.add('show');
+      if(btn.getAttribute('data-confetti')){burst(0.5,0.5,140);}
+    });
+  });
+
+  /* ---------- Confetti helper ---------- */
+  function burst(x,y,count){
+    if(typeof confetti!=='function')return;
+    confetti({particleCount:count,spread:80,origin:{x:x,y:y},colors:['#d97a1f','#f4c987','#ff6b6b','#e08a2c','#ffd580']});
+  }
+
+  /* ---------- LinkedIn confetti ---------- */
+  var li=document.getElementById('linkedinBtn');
+  li.addEventListener('click',function(e){
+    e.preventDefault();
+    var end=Date.now()+800;
+    (function frame(){
+      burst(Math.random(),Math.random()*0.5,50);
+      if(Date.now()<end){requestAnimationFrame(frame);}
+    })();
+    var url=li.getAttribute('href');
+    setTimeout(function(){window.open(url,'_blank','noopener');},850);
+  });
+
+  /* ---------- Floating click particles ---------- */
+  var emojis=['\uD83D\uDC9B','\uD83D\uDE8C','\u2615','\uD83D\uDE0A','\uD83C\uDF7F'];
+  document.addEventListener('click',function(e){
+    if(e.target.closest('.poll-opt')||e.target.closest('#linkedinBtn')||e.target.closest('#themeToggle'))return;
+    var el=document.createElement('div');
+    el.className='float-emoji';
+    el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    el.style.left=(e.clientX-10)+'px';
+    el.style.top=(e.clientY-10)+'px';
+    document.body.appendChild(el);
+    setTimeout(function(){el.remove();},1600);
+  });
+
+  /* ---------- Theme toggle ---------- */
+  var themeToggle=document.getElementById('themeToggle');
+  themeToggle.addEventListener('click',function(){
+    var dark=document.documentElement.getAttribute('data-theme')==='dark';
+    if(dark){document.documentElement.removeAttribute('data-theme');themeToggle.innerHTML='\uD83C\uDF19';}
+    else{document.documentElement.setAttribute('data-theme','dark');themeToggle.innerHTML='\u2600\uFE0F';}
+  });
+})();
+</script>
 </body>
 </html>
