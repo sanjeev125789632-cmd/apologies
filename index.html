@@ -170,6 +170,121 @@ p.body-text{font-size:1.1rem;margin-bottom:18px;color:var(--text);}
 
 .float-emoji{position:fixed;pointer-events:none;font-size:1.6rem;z-index:60;animation:floatUp 1.6s ease-out forwards;}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(.6);}100%{opacity:0;transform:translateY(-140px) scale(1.3);}}
+
+/* ==================== 3D ENHANCEMENTS ==================== */
+:root{ --lightX: -0.4; --lightY: -0.7; }
+[data-theme="dark"]{ --lightX: 0.5; --lightY: -0.4; }
+
+/* ---- Card depth + cursor tilt ---- */
+.tilt3d{
+  position:relative;
+  transform-style:preserve-3d;
+  will-change:transform;
+  transition:transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s cubic-bezier(.22,1,.36,1);
+}
+.tilt3d > *{ transform:translateZ(0.01px); }
+.tilt3d::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(circle at var(--glareX,50%) var(--glareY,0%),
+    rgba(255,255,255,var(--glare,0)) 0%, rgba(255,255,255,0) 55%);
+  mix-blend-mode:screen;transition:opacity .4s ease;z-index:2;
+}
+[data-theme="dark"] .tilt3d::after{ mix-blend-mode:soft-light; }
+.tilt3d.tilting{ transition:transform .08s linear, box-shadow .08s linear; }
+
+/* perspective containers for tilt cards */
+.card, .bus-track, .poll-container{ perspective:900px; }
+
+/* ---- 3D envelope open ---- */
+.stage{ perspective:1400px; }
+.envelope-wrapper{ transform-style:preserve-3d; }
+.envelope{ transform-style:preserve-3d; }
+.env-flap{ backface-visibility:hidden; }
+.envelope-wrapper.opened{
+  transform:translateZ(220px) scale(.72) translateY(30px);
+  opacity:0;
+  transition:opacity .7s ease .25s, transform .8s cubic-bezier(.34,1.56,.64,1);
+}
+.envelope-wrapper.opened .env-flap{
+  transform:rotateX(-180deg);
+  transition:transform .7s cubic-bezier(.34,1.4,.5,1);
+}
+.letter{ transform-style:preserve-3d; }
+.letter.revealed{
+  animation:letterLift .9s cubic-bezier(.34,1.4,.5,1) both;
+}
+@keyframes letterLift{
+  0%{ transform:translateZ(-140px) translateY(50px) scale(.92); opacity:0; }
+  60%{ opacity:1; }
+  100%{ transform:none; opacity:1; }
+}
+
+/* ---- 3D bus "ride along" scene ---- */
+.bus-track{ transform-style:preserve-3d; }
+.bus-scene{
+  position:relative;height:150px;margin:10px 6px 4px;
+  perspective:520px;perspective-origin:50% 30%;
+}
+.bus-road{
+  position:absolute;left:50%;bottom:0;width:150%;height:340px;
+  transform:translateX(-50%) rotateX(64deg);
+  transform-origin:bottom center;
+  background:
+    linear-gradient(to top, var(--divider), transparent 78%),
+    repeating-linear-gradient(0deg, var(--accent) 0 26px, transparent 26px 60px) center/14px 100% no-repeat,
+    linear-gradient(90deg, transparent 0 8%, var(--pill) 8% 92%, transparent 92%);
+  border-radius:50% 50% 0 0 / 14% 14% 0 0;
+  opacity:.9;
+}
+.bus-road::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top, transparent 40%, var(--card) 96%);
+}
+.bus-billboard{
+  position:absolute;bottom:22px;
+  transform-origin:bottom center;
+  text-align:center;font-family:'Outfit',sans-serif;font-weight:700;
+  color:var(--muted);white-space:nowrap;transition:color .3s ease, transform .3s ease, opacity .3s ease;
+}
+.bus-billboard .post{ display:block;width:3px;height:16px;margin:2px auto 0;background:var(--divider);border-radius:2px; }
+.bus-billboard .label{
+  display:inline-block;padding:4px 10px;border-radius:10px;
+  background:var(--card);border:1px solid var(--cardBorder);
+  box-shadow:0 4px 10px rgba(180,120,60,.16);
+}
+.bus-billboard.active{ color:var(--text);transform:translateY(-4px) scale(1.06); }
+.bus-billboard.active .label{ background:var(--accent);color:#fffdf9;border-color:var(--accent); }
+.bus-rider{
+  position:absolute;bottom:30px;left:0;font-size:2rem;
+  transform:translateX(-50%);transition:left .25s cubic-bezier(.4,0,.2,1);
+  filter:drop-shadow(0 8px 6px rgba(120,80,40,.35));z-index:5;
+}
+
+/* ---- Ambient scroll depth ---- */
+.depth-layer{ position:fixed;pointer-events:none;z-index:0;opacity:.5;will-change:transform;transition:opacity .6s ease; }
+.depth-far{ top:8%;left:6%;font-size:5rem; }
+.depth-mid{ top:60%;right:8%;font-size:4rem; }
+.depth-near{ bottom:10%;left:12%;font-size:3rem; }
+[data-theme="dark"] .depth-layer{ opacity:.28; }
+
+/* ---- Micro-interactions ---- */
+.poll-opt{ transform-style:preserve-3d;transition:transform .18s cubic-bezier(.4,0,.2,1),box-shadow .18s ease,background .2s ease; }
+.poll-opt.chosen{
+  transform:translateZ(-8px) scale(.985);
+  box-shadow:inset 0 3px 8px rgba(120,70,20,.35);
+}
+.linkedin-btn{ transform-style:preserve-3d;transition:transform .12s cubic-bezier(.4,0,.2,1),box-shadow .18s ease,background .2s ease; }
+.linkedin-btn:active{ transform:translateY(2px) translateZ(-6px) scale(.97);box-shadow:0 3px 8px rgba(180,120,60,.25); }
+
+@media (hover:none){
+  .tilt3d{ transform:none !important; }
+  .tilt3d::after{ opacity:0 !important; }
+  .depth-layer{ display:none; }
+}
+@media (prefers-reduced-motion:reduce){
+  .tilt3d,.letter.revealed{ animation:none !important;transition:none !important; }
+}
+
 </style>
 </head>
 <body>
@@ -236,6 +351,127 @@ p.body-text{font-size:1.1rem;margin-bottom:18px;color:var(--text);}
 
 <script>
 (function(){
+  /* ==================== 3D ENHANCEMENTS ==================== */
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isTouch = window.matchMedia('(hover: none)').matches;
+
+  /* ---- Cursor tilt parallax on cards ---- */
+  function attachTilt(el){
+    if(!el || isTouch) return;
+    el.classList.add('tilt3d');
+    var MAX = 10, LIFT = 26, raf = null, tx = 0, ty = 0;
+    function apply(){
+      raf = null;
+      el.style.transform = 'perspective(900px) rotateX(' + (-ty*MAX).toFixed(2) + 'deg) rotateY(' + (tx*MAX).toFixed(2) + 'deg) translateZ(' + LIFT + 'px)';
+      var sx = -(tx*22).toFixed(1), sy = (ty*26 + 22).toFixed(1);
+      var blur = 40;
+      el.style.boxShadow = sx + 'px ' + sy + 'px ' + blur + 'px rgba(120,80,40,.28)';
+      el.style.setProperty('--glare', (0.28).toString());
+      el.style.setProperty('--glareX', (50 + tx*60).toFixed(1) + '%');
+      el.style.setProperty('--glareY', (ty*60 + 10).toFixed(1) + '%');
+    }
+    el.addEventListener('mousemove', function(e){
+      var r = el.getBoundingClientRect();
+      tx = ((e.clientX - r.left)/r.width - 0.5) * 2;
+      ty = ((e.clientY - r.top)/r.height - 0.5) * 2;
+      el.classList.add('tilting');
+      if(!raf) raf = requestAnimationFrame(apply);
+    });
+    el.addEventListener('mouseenter', function(){ el.classList.add('tilting'); });
+    el.addEventListener('mouseleave', function(){
+      el.classList.remove('tilting');
+      el.style.transform = '';
+      el.style.boxShadow = '';
+      el.style.setProperty('--glare','0');
+    });
+  }
+
+  /* ---- Build 3D bus "ride along" scene ---- */
+  var busRider = null, billboards = [];
+  (function buildBusScene(){
+    var track = document.querySelector('.bus-track');
+    var line = track && track.querySelector('.route-line');
+    var stopsRow = document.getElementById('stops');
+    if(!track || !stopsRow) return;
+    var stopEls = Array.prototype.slice.call(stopsRow.querySelectorAll('.stop'));
+    var scene = document.createElement('div');
+    scene.className = 'bus-scene';
+    var road = document.createElement('div');
+    road.className = 'bus-road';
+    scene.appendChild(road);
+    var rider = document.createElement('div');
+    rider.className = 'bus-rider';
+    rider.textContent = '\uD83D\uDE8C';
+    scene.appendChild(rider);
+    busRider = rider;
+    var n = stopEls.length;
+    stopEls.forEach(function(st, i){
+      var name = st.textContent.replace(/[^A-Za-z ]/g,'').trim();
+      var bb = document.createElement('div');
+      bb.className = 'bus-billboard';
+      var frac = n>1 ? i/(n-1) : 0;
+      var xPct = 10 + frac*80;
+      bb.style.left = xPct + '%';
+      var depth = 1 - frac*0.55;
+      bb.style.transform = 'translateX(-50%) scale(' + depth.toFixed(2) + ')';
+      bb.style.opacity = (0.55 + frac*0.45).toFixed(2);
+      bb.innerHTML = '<span class="label">' + name + '</span><span class="post"></span>';
+      bb.dataset.frac = frac;
+      scene.appendChild(bb);
+      billboards.push(bb);
+    });
+    if(line) line.style.display = 'none';
+    track.insertBefore(scene, stopsRow);
+  })();
+
+  function updateBusScene(prog){
+    if(busRider){ busRider.style.left = (10 + prog*80) + '%'; }
+    var idx = Math.min(billboards.length-1, Math.floor(prog*billboards.length + 0.001));
+    billboards.forEach(function(bb,i){ bb.classList.toggle('active', i<=idx); });
+  }
+
+  /* ---- Ambient scroll layered depth + light direction ---- */
+  var layers = [];
+  (function buildDepth(){
+    var defs = [['depth-far','\u2601\uFE0F',0.08],['depth-mid','\uD83C\uDFE2',0.22],['depth-near','\uD83C\uDF3F',0.4]];
+    defs.forEach(function(d){
+      var el = document.createElement('div');
+      el.className = 'depth-layer ' + d[0];
+      el.textContent = d[1];
+      el.dataset.speed = d[2];
+      document.body.appendChild(el);
+      layers.push(el);
+    });
+  })();
+
+  var scrollRaf = null;
+  function onScroll(){
+    if(scrollRaf) return;
+    scrollRaf = requestAnimationFrame(function(){
+      scrollRaf = null;
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      var prog = docH>0 ? Math.min(1, Math.max(0, window.scrollY/docH)) : 0;
+      if(!isTouch){
+        layers.forEach(function(el){
+          var sp = parseFloat(el.dataset.speed);
+          el.style.transform = 'translate3d(0,' + (-window.scrollY*sp).toFixed(1) + 'px,0)';
+        });
+      }
+      updateBusScene(prog);
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+
+  /* attach tilt after letter reveal so cards measure correctly */
+  function initTilt(){
+    attachTilt(document.querySelector('.letter .card'));
+    attachTilt(document.querySelector('.bus-track'));
+    attachTilt(document.querySelector('.poll-container'));
+  }
+  setTimeout(initTilt, 600);
+  setTimeout(onScroll, 700);
+
   /* ---------- Envelope open ---------- */
   var envelope=document.getElementById('envelope');
   var letter=document.getElementById('letter');
@@ -248,6 +484,7 @@ p.body-text{font-size:1.1rem;margin-bottom:18px;color:var(--text);}
       letter.classList.add('revealed');
       letter.scrollIntoView({behavior:'smooth'});
       updateBus();
+      onScroll();
     },500);
     burst(0.5,0.4,60);
   }
